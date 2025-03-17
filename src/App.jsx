@@ -1,18 +1,22 @@
 import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
-import Layout from "./Layout";
-import CharacterDetailsPage from "./pages/CharacterDetailsPage";
-import FavoritesList from "./pages/FavoritesList"; // Import FavoritesList
+import { Suspense, lazy } from "react";
+
+const Layout = lazy(() => import("./Layout"));
+const Home = lazy(() => import("./pages/Home"));
+const CharacterDetailsPage = lazy(() => import("./pages/CharacterDetailsPage"));
+const FavoritesList = lazy(() => import("./pages/FavoritesList"));
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route path="/character/:id" element={<CharacterDetailsPage />} />
-        <Route path="/favorites" element={<FavoritesList />} /> {/* Add route */}
-      </Route>
-    </Routes>
+    <Suspense fallback={<p>Loading...</p>}>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="/character/:id" element={<CharacterDetailsPage />} />
+          <Route path="/favorites" element={<FavoritesList />} />
+        </Route>
+      </Routes>
+    </Suspense>
   );
 }
 

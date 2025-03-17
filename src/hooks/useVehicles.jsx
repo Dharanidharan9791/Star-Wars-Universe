@@ -8,7 +8,7 @@ export const useVehicles = (vehicleUrls) => {
 
   useEffect(() => {
     if (!vehicleUrls || vehicleUrls.length === 0) {
-      setVehicles([]); // Reset state when no URLs are provided
+      setVehicles([]);
       setLoading(false);
       return;
     }
@@ -16,12 +16,8 @@ export const useVehicles = (vehicleUrls) => {
     const fetchVehicles = async () => {
       setLoading(true);
       try {
-        const vehicleRequests = vehicleUrls.map((url) => axios.get(url));
-        const responses = await Promise.all(vehicleRequests);
-        
-        // Ensure correct data extraction
-        const vehicleNames = responses.map((res) => res.data?.name || "Unknown Vehicle");
-        setVehicles(vehicleNames);
+        const responses = await Promise.all(vehicleUrls.map((url) => axios.get(url)));
+        setVehicles(responses.map((res) => res.data.name));
       } catch (err) {
         setError(err.message);
       } finally {
@@ -30,7 +26,7 @@ export const useVehicles = (vehicleUrls) => {
     };
 
     fetchVehicles();
-  }, [JSON.stringify(vehicleUrls)]); // Prevent unnecessary re-renders
+  }, [JSON.stringify(vehicleUrls)]);
 
   return { vehicles, loading, error };
 };

@@ -3,22 +3,20 @@ import axios from "axios";
 
 export const useStarships = (starshipUrls) => {
   const [starships, setStarships] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!starshipUrls || starshipUrls.length === 0) {
-      setStarships([]); // Reset state when no URLs are provided
+      setStarships([]);
       setLoading(false);
-      setError("No Starships Found");
       return;
     }
 
     const fetchStarships = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
-        const starshipRequests = starshipUrls.map((url) => axios.get(url));
-        const responses = await Promise.all(starshipRequests);
+        const responses = await Promise.all(starshipUrls.map((url) => axios.get(url)));
         setStarships(responses.map((res) => res.data.name));
       } catch (err) {
         setError(err.message);
@@ -28,7 +26,7 @@ export const useStarships = (starshipUrls) => {
     };
 
     fetchStarships();
-  }, [JSON.stringify(starshipUrls)]); // Use JSON.stringify to prevent infinite re-renders
+  }, [JSON.stringify(starshipUrls)]);
 
   return { starships, loading, error };
 };

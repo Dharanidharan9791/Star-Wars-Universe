@@ -11,8 +11,6 @@ export const useCharacter = (id) => {
             setLoading(true)
             try {
                 const response = await getCharacter(id)
-                console.log('id', response)
-
                 setCharacter(response)
             } catch (error) {
                 setError(error)
