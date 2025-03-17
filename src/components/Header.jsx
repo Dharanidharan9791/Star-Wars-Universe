@@ -8,7 +8,7 @@ const Header = () => {
 
   return (
     <header className="bg-black text-white pl-5 flex items-center justify-between">
-      <div className="flex items-center">
+      <div className="flex items-center" onClick={() => navigate("/")}>
         <img src={StarWarsLogo} alt="Star Wars Logo" className="pr-4" width={90} />
       </div>
       <div className="pr-5">

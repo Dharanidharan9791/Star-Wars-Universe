@@ -6,6 +6,7 @@ import { useStarships } from "../hooks/useStarships";
 import { useDispatch } from "react-redux";
 import { addFavorite } from "../redux/favoritesSlice";
 import Button from "../components/Button";
+import { FaHeart } from "react-icons/fa"; // Import heart icon
 
 const CharacterDetails = () => {
     const { id } = useParams();
@@ -26,14 +27,21 @@ const CharacterDetails = () => {
     return (
         <>
             {character && (
-                <div>
-                    <h2>{character.name}</h2>
+                <div className="relative border p-4 rounded shadow">
+                    <button
+                        className="absolute top-2 right-2 text-red-500"
+                        onClick={handleAddToFavorites}
+                        aria-label="Add to Favorites"
+                    >
+                        <FaHeart />
+                    </button>
+                    <h2 className="text-2xl">{character.name}</h2>
                     <p>Gender: {character.gender}</p>
                     <p>Birth Year: {character.birth_year}</p>
                     <p>Hair Color: {character.hair_color}</p>
                     <p>Skin Color: {character.skin_color}</p>
                     <p>Eye Color: {character.eye_color}</p>
-
+                    <p>Home Planet: {character.homeworld || "Unknown"}</p> {/* Add home planet */}
                     <Button variant="primary" onClick={handleAddToFavorites}>
                         Add to Favorites
                     </Button>

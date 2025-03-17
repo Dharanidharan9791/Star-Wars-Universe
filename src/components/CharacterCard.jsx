@@ -6,7 +6,10 @@ const CharacterCard = ({ name, gender, homeworld, birthYear, hairColor, height, 
 
   return (
     <div className="border rounded-lg shadow-md p-4 bg-white">
-      <h2 className="text-xl font-bold mb-2">{name}</h2>
+      <div className="flex">
+        <div className="text-xl font-bold mb-2">{name}</div>
+        <button className="btn-">Favorites</button>
+      </div>
       <p><strong>Gender:</strong> {gender}</p>
       <p>
         <strong>Home Planet:</strong>{" "}
