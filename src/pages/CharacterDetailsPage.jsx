@@ -20,6 +20,7 @@ const CharacterDetails = () => {
   const { starships, loading: starshipsLoading } = useStarships(character?.starships || []);
 
   const [homeworldName, setHomeworldName] = useState("Unknown");
+  const [homeworldError, setHomeworldError] = useState(null); // Add error state
 
   useEffect(() => {
     const fetchHomeworld = async () => {
@@ -28,8 +29,10 @@ const CharacterDetails = () => {
           const response = await fetch(character.homeworld);
           const data = await response.json();
           setHomeworldName(data.name || "Unknown");
-        } catch {
+          setHomeworldError(null); // Reset error on success
+        } catch (error) {
           setHomeworldName("Unknown");
+          setHomeworldError(error); // Capture error
         }
       }
     };
@@ -73,7 +76,7 @@ const CharacterDetails = () => {
               <p><span className="font-bold">Birth Year:</span> {character.birth_year}</p>
             </div>
             <div>
-              <p><span className="font-bold">Home World:</span> {homeworldName}</p>
+              <p><span className="font-bold">Home World:</span> {homeworldError ? "Error loading homeworld" : homeworldName}</p>
               <p><span className="font-bold">Skin Color:</span> {character.skin_color}</p>
               <p><span className="font-bold">Mass:</span> {character.mass}</p>
             </div>

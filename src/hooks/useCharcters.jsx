@@ -13,12 +13,13 @@ export const useCharacters = (page) => {
     useEffect(() => {
         const fetchCharacters = async () => {
             setLoading(true);
+            setError(null); // Reset error before fetching
             try {
                 const response = await getCharacters(page); // Pass page number to API
                 dispatch(setCharacters(response.results));
                 setTotalPages(Math.ceil(response.count / 10)); // Calculate total pages dynamically
             } catch (error) {
-                setError(error);
+                setError(error); // Capture error
             } finally {
                 setLoading(false);
             }

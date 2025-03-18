@@ -6,9 +6,19 @@ import Button from "../components/Button";
 const EditCharacterModal = ({ character, onClose }) => {
   const [gender, setGender] = useState(character.gender);
   const [height, setHeight] = useState(character.height);
+  const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
 
+  const validate = () => {
+    const newErrors = {};
+    if (!gender.trim()) newErrors.gender = "Gender is required.";
+    if (!height.trim() || isNaN(height) || height <= 0) newErrors.height = "Height must be a positive number.";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleUpdate = () => {
+    if (!validate()) return;
     dispatch(updateFavorite({ ...character, gender, height }));
     onClose();
   };
@@ -25,6 +35,7 @@ const EditCharacterModal = ({ character, onClose }) => {
             onChange={(e) => setGender(e.target.value)}
             className="w-full border rounded px-3 py-2"
           />
+          {errors.gender && <p className="text-red-500 text-sm mt-1">{errors.gender}</p>}
         </div>
         <div className="mb-4">
           <label className="block font-semibold mb-1">Height</label>
@@ -34,6 +45,7 @@ const EditCharacterModal = ({ character, onClose }) => {
             onChange={(e) => setHeight(e.target.value)}
             className="w-full border rounded px-3 py-2"
           />
+          {errors.height && <p className="text-red-500 text-sm mt-1">{errors.height}</p>}
         </div>
         <div className="flex justify-end space-x-4">
           <Button variant="ghost" onClick={onClose}>

@@ -8,16 +8,19 @@ import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { MESSAGES } from "../constants/messages";
 
+// Component to display a character card with details and favorite toggle
 const CharacterCard = ({ name, gender, homeworld, birthYear, hairColor, height, mass, url }) => {
-  const { planet, loading, error } = usePlanet(homeworld);
+  const { planet, loading, error } = usePlanet(homeworld); // Fetch homeworld details
   const dispatch = useDispatch();
-  const favorites = useSelector((state) => state.favorites.list);
+  const favorites = useSelector((state) => state.favorites.list); // Get the list of favorite characters
   const navigate = useNavigate();
 
+  // Check if the character is already in the favorites list
   const isFavorite = favorites.some((fav) => fav.url === url);
 
+  // Toggle the favorite status of the character
   const handleToggleFavorite = (event) => {
-    event.stopPropagation();
+    event.stopPropagation(); // Prevent triggering parent click events
     if (isFavorite) {
       dispatch(removeFavorite({ url }));
     } else {
@@ -25,6 +28,7 @@ const CharacterCard = ({ name, gender, homeworld, birthYear, hairColor, height, 
     }
   };
 
+  // Navigate to the character details page
   const handleNavigate = () => {
     navigate(`/character/${url.split("/").slice(-2, -1)[0]}`);
   };
@@ -41,6 +45,7 @@ const CharacterCard = ({ name, gender, homeworld, birthYear, hairColor, height, 
           )}
         </button>
       </div>
+      {/* Display character details */}
       <p>
         <FaGlobe className="inline-block mr-2" />
         <strong>Home World:</strong> {loading ? MESSAGES.LOADING : error ? MESSAGES.UNKNOWN : planet?.name || MESSAGES.UNKNOWN}
@@ -69,6 +74,7 @@ const CharacterCard = ({ name, gender, homeworld, birthYear, hairColor, height, 
   );
 };
 
+// Define prop types for the component
 CharacterCard.propTypes = {
   name: PropTypes.string.isRequired,
   gender: PropTypes.string.isRequired,
